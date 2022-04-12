@@ -1,0 +1,28 @@
+{
+  "name": "webtube",
+  "version": "1.0.0",
+  "description": "my first footstep, one of many ways to share videos",
+  "scripts": {
+    "dev": "nodemon --exec babel-node ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OneHyun/webtube-reloaded.git"
+  },
+  "author": "OneHyun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/OneHyun/webtube-reloaded/issues"
+  },
+  "homepage": "https://github.com/OneHyun/webtube-reloaded#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "nodemon": "^2.0.15"
+  }
+}
