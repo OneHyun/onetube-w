@@ -5,8 +5,9 @@ import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
 
 const PORT = 4001;
-
 const app = express();
+app.set("views", process.cwd()+"/src/views"); //change default view directory
+app.set("view engine", "pug"); //set view engine
 app.use(morgan("dev")); //logger
 
 app.use("/", globalRouter);
