@@ -1,8 +1,9 @@
-mixin video(info)
+mixin video(videoInfo)
     div
-        h4=info.title
+        h4
+            a(href=`/videos/${videoInfo.id}`)=videoInfo.title
         ul
-            li #{info.rating}/5.
-            li #{info.comments} comments.
-            li Posted #{info.createdAt}.
-            li #{info.views} views. 
+            li #{videoInfo.rating}/5.
+            li #{videoInfo.comments} comments.
+            li Posted #{videoInfo.createdAt}.
+            li #{videoInfo.views} views. 
