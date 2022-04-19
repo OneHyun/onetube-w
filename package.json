@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "my first footstep, one of many ways to share videos",
   "scripts": {
-    "dev": "nodemon --exec babel-node ./src/server.js"
+    "dev": "nodemon --exec babel-node ./src/init.js"
   },
   "repository": {
     "type": "git",
