@@ -17,19 +17,37 @@ export const home = async (req, res) => {
   }
 };
 
-export const watch = (req, res) => {
+export const watch = async (req, res) => {
   const { id } = req.params;
-  return res.render("watch", { pageTitle: `Watching` });
+  const video = await videoModel.findById(id);
+  if (!video) return res.render("404", { pageTitle: "Video Not Found." });
+
+  return res.render("watch", { pageTitle: video.title, video });
 };
 
-export const getEdit = (req, res) => {
+export const getEdit = async (req, res) => {
   const { id } = req.params;
-  return res.render("edit", { pageTitle: `Editing` });
+  const video = await videoModel.findById(id);
+  if (!video) return res.render("404", { pageTitle: "Video Not Found." });
+
+  return res.render("edit", { pageTitle: `Editing ${video.title}`, video });
 };
 
-export const postEdit = (req, res) => {
+export const postEdit = async (req, res) => {
   const { id } = req.params;
-  const { title } = req.body;
+  const { title, description, hashtags } = req.body;
+  const video = await videoModel.exists({ _id: id });
+  if (!video) {
+    return res.render("404", { pageTitle: "Video not found." });
+  }
+
+  await videoModel.findByIdAndUpdate(id, {
+    title,
+    description,
+    hashtags: hashtags.split(",").map((word) => `#${word.replaceAll("#", "")}`),
+  });
+  // hashtags: hashtags.split(",").map((word) => (word.startsWith("#") ? word : `#${word}`))
+
   return res.redirect(`/videos/${id}`);
 };
 
@@ -37,7 +55,19 @@ export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "New Video Upload" });
 };
 
-export const postUpload = (req, res) => {
-  const { title } = req.body;
-  return res.redirect("/");
+export const postUpload = async (req, res) => {
+  const { title, description, hashtags } = req.body;
+  try {
+    await videoModel.create({
+      title,
+      description,
+      hashtags: hashtags.split(",").map((word) => `#${word}`),
+    });
+    return res.redirect("/");
+  } catch (error) {
+    return res.render("upload", {
+      pageTitle: "New Video Upload",
+      errorMessage: error._message,
+    });
+  }
 };
