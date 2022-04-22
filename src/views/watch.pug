@@ -6,3 +6,5 @@ block content
         small=video.createdAt
         h5 #{video.meta.views} #{video.meta.views <= 1 ? "view" : "views"}
     a(href=`${video.id}/edit`) Edit Video &larr;
+    br
+    a(href=`${video.id}/delete`) Delete Video &larr;

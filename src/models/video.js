@@ -17,6 +17,12 @@ const videoSchema = new mongoose.Schema({
   },
 });
 
+videoSchema.static("formatHashtags", function (hashtags) {
+  return hashtags
+    .split(",")
+    .map((word) => `#${word.replaceAll("#", "").trim()}`);
+});
+
 const videoModel = mongoose.model("Video", videoSchema);
 
 export default videoModel;
