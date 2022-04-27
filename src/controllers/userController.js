@@ -1,4 +1,5 @@
 import userModel from "../models/user";
+import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
@@ -59,5 +60,37 @@ export const postLogin = async (req, res) => {
   return res.redirect("/");
 };
 
+export const startGithubLogin = (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/authorize";
+  const config = {
+    client_id: process.env.GITH_CLIENT,
+    allow_signup: true,
+    scope: "read:user user:email",
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  return res.redirect(finalUrl);
+};
+
+export const finishGithubLogin = async (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/access_token";
+  const config = {
+    client_id: process.env.GITH_CLIENT,
+    client_secret: process.env.GITH_SECRECT,
+    code: req.query.code,
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  const data = await fetch(finalUrl, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+  console.log(data);
+  const json = await data.json();
+  console.log(json);
+  res.send(JSON.stringify(json));
+};
 export const logout = (req, res) => res.send("Log out");
 export const see = (req, res) => res.send("See User");
