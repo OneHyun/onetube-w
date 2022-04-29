@@ -130,12 +130,75 @@ export const finishGithubLogin = async (req, res) => {
     }
     req.session.loggedIn = true;
     req.session.user = user;
-    console.log(req.session.user);
     return res.redirect("/");
   } else {
     return res.redirect("/login", { errorMessage: "not accessed" });
   }
 };
+
+export const startKakaoLogin = async (req, res) => {
+  const baseUrl = "https://kauth.kakao.com/oauth/authorize";
+  const config = {
+    client_id: process.env.KAO_CLIENT,
+    redirect_uri: "http://localhost:4000/users/kakao/finish",
+    response_type: "code",
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  return res.redirect(finalUrl);
+};
+export const finishKakaoLogin = async (req, res) => {
+  const baseUrl = "https://kauth.kakao.com/oauth/token";
+  const config = {
+    grant_type: "authorization_code",
+    client_id: process.env.KAO_CLIENT,
+    code: req.query.code,
+    scope: "profile_nickname profile_image account_email",
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+
+  const tokenRequest = await (
+    await fetch(finalUrl, {
+      method: "POST",
+    })
+  ).json();
+
+  if ("access_token" in tokenRequest) {
+    const { access_token } = tokenRequest;
+    const apiURL = "https://kapi.kakao.com";
+    const userData = await (
+      await fetch(`${apiURL}/v2/user/me`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    ).json();
+
+    //connect account through kakao email
+    let user = await userModel.findOne({ email: userData.kakao_account.email });
+    if (!user) {
+      user = await userModel.create({
+        name: userData.kakao_account.profile.nickname,
+        avatarUrl: userData.kakao_account.profile.profile_image_url,
+        createdSocialLogin: true,
+        username: userData.kakao_account.profile.nickname,
+        email: userData.kakao_account.email,
+        password: "",
+        location: "",
+      });
+    }
+    req.session.loggedIn = true;
+    req.session.user = user;
+
+    return res.redirect("/");
+  } else {
+    return res.redirect("/login", { errorMessage: "not accessed" });
+  }
+
+  res.send(userData);
+};
+
 export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
