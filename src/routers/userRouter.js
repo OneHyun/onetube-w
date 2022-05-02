@@ -3,6 +3,8 @@ import {
   logout,
   getEditProfile,
   postEditProfile,
+  getChangePassword,
+  postChangePassword,
   see,
   startGithubLogin,
   finishGithubLogin,
@@ -18,6 +20,12 @@ userRouter
   .all(protectMiddleware)
   .get(getEditProfile)
   .post(postEditProfile);
+
+userRouter
+  .route("/change_password")
+  .all(protectMiddleware)
+  .get(getChangePassword)
+  .post(postChangePassword);
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 

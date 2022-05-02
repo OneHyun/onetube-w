@@ -211,7 +211,7 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 export const getEditProfile = (req, res) => {
-  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+  return res.render("users/edit_profile", { pageTitle: "Edit Profile" });
 };
 export const postEditProfile = async (req, res) => {
   const {
@@ -223,9 +223,9 @@ export const postEditProfile = async (req, res) => {
 
   const findUsername = await userModel.findOne({ username });
   if (findUsername && findUsername.id != _id) {
-    return res.render("edit-profile", {
-      pageTitle: "Edit  Profile",
-      errorMessage: "User is exist",
+    return res.render("users/edit_profile", {
+      pageTitle: "Edit Profile",
+      errorMessage: "Already user is exist",
     });
   }
 
@@ -241,5 +241,49 @@ export const postEditProfile = async (req, res) => {
   req.session.user = updateUser;
   return res.redirect("edit");
 };
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.createdSocialLogin === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change_password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { oldPassword, newPassword, newPasswordConfirm },
+  } = req;
+
+  const user = await userModel.findById(_id);
+  const isMatchPW = await bcrypt.compare(oldPassword, user.password);
+  if (!isMatchPW) {
+    return res.status(400).render("users/change_password", {
+      pageTitle: "Change Password",
+      errorMessage: "The current password is incorrect",
+    });
+  }
+
+  if (oldPassword === newPassword) {
+    return res.status(400).render("users/change_password", {
+      pageTitle,
+      errorMessage: "The old password equals new password",
+    });
+  }
+
+  if (newPassword !== newPasswordConfirm) {
+    return res.status(400).render("users/change_password", {
+      pageTitle: "Change Password",
+      errorMessage: "The Password does not match the confirmation",
+    });
+  }
+
+  user.password = newPassword;
+  await user.save();
+  req.session.destroy();
+  return res.redirect("/login");
+};
+
 export const see = (req, res) => res.send("See User");
 export const remove = (req, res) => res.send("Remove User");
