@@ -1,10 +1,11 @@
 import userModel from "../models/user";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import session from "express-session";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
-  const { username, email, password, password2, name, location } = req.body;
+  const { name, username, email, password, password2, location } = req.body;
   const pageTitle = "Join";
 
   if (password !== password2) {
@@ -31,9 +32,6 @@ export const postJoin = async (req, res) => {
       .render("join", { pageTitle, errorMessage: error._message });
   }
 };
-
-export const edit = (req, res) => res.send("Edit User");
-export const remove = (req, res) => res.send("Remove User");
 
 export const getLogin = (req, res) =>
   res.render("login", { pageTitle: "Login" });
@@ -115,19 +113,22 @@ export const finishGithubLogin = async (req, res) => {
       return res.redirect("/login");
     }
 
+    const findUsername = await userModel.findOne({ usernam: userData.login });
     //connect account through github email
     let user = await userModel.findOne({ email: emailObj.email });
     if (!user) {
+      const chkSameUser = Boolean(findUsername.username === userData.login);
       user = await userModel.create({
         name: userData.name ? userData.name : userData.login,
         avatarUrl: userData.avatar_url,
         createdSocialLogin: true,
-        username: userData.login,
+        username: chkSameUser ? `${userData.login}_1` : userData.login,
         email: emailObj.email,
         password: "",
         location: userData.location ? userData.location : "Unknown",
       });
     }
+    console.log("complete");
     req.session.loggedIn = true;
     req.session.user = user;
     return res.redirect("/");
@@ -175,14 +176,20 @@ export const finishKakaoLogin = async (req, res) => {
       })
     ).json();
 
+    const findUsername = await userModel.findOne({ usernam: userData.login });
     //connect account through kakao email
     let user = await userModel.findOne({ email: userData.kakao_account.email });
     if (!user) {
+      const chkSameUser = Boolean(
+        findUsername.username === userData.kakao_account.profile.nickname
+      );
       user = await userModel.create({
         name: userData.kakao_account.profile.nickname,
         avatarUrl: userData.kakao_account.profile.profile_image_url,
         createdSocialLogin: true,
-        username: userData.kakao_account.profile.nickname,
+        username: chkSameUser
+          ? `${kakao_account.profile.nickname}_1`
+          : kakao_account.profile.nickname,
         email: userData.kakao_account.email,
         password: "",
         location: "",
@@ -203,4 +210,36 @@ export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
 };
+export const getEditProfile = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+export const postEditProfile = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, username, location },
+  } = req;
+
+  const findUsername = await userModel.findOne({ username });
+  if (findUsername && findUsername.id != _id) {
+    return res.render("edit-profile", {
+      pageTitle: "Edit  Profile",
+      errorMessage: "User is exist",
+    });
+  }
+
+  const updateUser = await userModel.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updateUser;
+  return res.redirect("edit");
+};
 export const see = (req, res) => res.send("See User");
+export const remove = (req, res) => res.send("Remove User");
