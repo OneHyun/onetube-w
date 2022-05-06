@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export const localsMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
   res.locals.siteName = "Webtube";
@@ -20,3 +22,29 @@ export const publicOnlyMiddleware = (req, res, next) => {
     return res.redirect("/");
   }
 };
+
+export const avatarUpload = multer({
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype.includes("image/")) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
+  },
+  dest: "uploads/avatars/",
+  //Byte
+  limits: { fileSize: 3000000 },
+});
+
+export const videoUpload = multer({
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype.includes("video/")) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
+  },
+  dest: "uploads/videos/",
+  //Byte
+  limits: { fileSize: 10000000 },
+});
