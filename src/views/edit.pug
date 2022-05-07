@@ -4,7 +4,7 @@ block content
     h4 Update Video
     form(method="POST")
         input(name="title", placeholder="Video Title", type="text", value=video.title, required, minlength=5, maxlength=40)
-        input(name="description", placeholder="Description", type="text", value=video.description, required, minlength=20)
+        input(name="description", placeholder="Description", type="text", value=video.description, required, minlength=10)
         input(name="hashtags", placeholder="Hashtags, separated by comma.", type="text", value=video.hashtags.join(), required)
         
         input(type="submit", value="Save")

@@ -287,5 +287,16 @@ export const postChangePassword = async (req, res) => {
   return res.redirect("/login");
 };
 
-export const see = (req, res) => res.send("See User");
+export const see = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+
+  const user = await userModel.findById(id);
+  console.log(user);
+  return res.render("users/profile", {
+    pageTitle: user.name,
+    user,
+  });
+};
 export const remove = (req, res) => res.send("Remove User");
