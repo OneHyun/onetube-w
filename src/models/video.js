@@ -9,12 +9,17 @@ const videoSchema = new mongoose.Schema({
     maxlength: 40,
   },
   fileUrl: { type: String, required: true },
-  description: { type: String, required: true, trim: true, minLength: 20 },
+  description: { type: String, required: true, trim: true, minLength: 15 },
   createdAt: { type: Date, default: Date.now, required: true },
   hashtags: [{ type: String, trim: true }],
   meta: {
     views: { type: Number, default: 0, required: true },
     rating: { type: Number, default: 0, required: true },
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
 });
 

@@ -2,6 +2,7 @@ import userModel from "../models/user";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import session from "express-session";
+import videoModel from "../models/video";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
@@ -113,22 +114,35 @@ export const finishGithubLogin = async (req, res) => {
       return res.redirect("/login");
     }
 
-    const findUsername = await userModel.findOne({ usernam: userData.login });
+    const findUsername = await userModel.findOne({ username: userData.login });
     //connect account through github email
     let user = await userModel.findOne({ email: emailObj.email });
     if (!user) {
-      const chkSameUser = Boolean(findUsername.username === userData.login);
+      const chkExistSameNameUser =
+        findUsername === null
+          ? false
+          : Boolean(findUsername.username === userData.login);
+      let count = 0;
+      if (chkExistSameNameUser) {
+        count = await userModel.count({
+          username: { $regex: userData.login },
+        });
+      }
+      console.log(count);
+
       user = await userModel.create({
         name: userData.name ? userData.name : userData.login,
         avatarUrl: userData.avatar_url,
         createdSocialLogin: true,
-        username: chkSameUser ? `${userData.login}_1` : userData.login,
+        username: chkExistSameNameUser
+          ? `${userData.login}_${count}`
+          : userData.login,
         email: emailObj.email,
         password: "",
         location: userData.location ? userData.location : "Unknown",
       });
     }
-    console.log("complete");
+
     req.session.loggedIn = true;
     req.session.user = user;
     return res.redirect("/");
@@ -180,16 +194,27 @@ export const finishKakaoLogin = async (req, res) => {
     //connect account through kakao email
     let user = await userModel.findOne({ email: userData.kakao_account.email });
     if (!user) {
-      const chkSameUser = Boolean(
-        findUsername.username === userData.kakao_account.profile.nickname
-      );
+      const chkExistSameNameUser =
+        findUsername === null
+          ? false
+          : Boolean(
+              findUsername.username === userData.kakao_account.profile.nickname
+            );
+      let count = 0;
+      if (chkExistSameNameUser) {
+        count = await userModel.count({
+          username: { $regex: userData.kakao_account.profile.nickname },
+        });
+      }
+      console.log(count);
+
       user = await userModel.create({
         name: userData.kakao_account.profile.nickname,
         avatarUrl: userData.kakao_account.profile.profile_image_url,
         createdSocialLogin: true,
-        username: chkSameUser
-          ? `${kakao_account.profile.nickname}_1`
-          : kakao_account.profile.nickname,
+        username: chkExistSameNameUser
+          ? `${userData.kakao_account.profile.nickname}_${count}`
+          : userData.kakao_account.profile.nickname,
         email: userData.kakao_account.email,
         password: "",
         location: "",
@@ -292,8 +317,12 @@ export const see = async (req, res) => {
     params: { id },
   } = req;
 
-  const user = await userModel.findById(id);
+  const user = await userModel.findById(id).populate("videos");
   console.log(user);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found." });
+  }
+
   return res.render("users/profile", {
     pageTitle: user.name,
     user,
