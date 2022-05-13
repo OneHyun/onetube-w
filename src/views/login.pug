@@ -8,11 +8,8 @@ block content
         input(name="password", placeholder="Password", type="password", required)
         input(type="submit", value="Login")
 
-        br
-        a(href="/users/github/start") Continue with Github &larr;
-        br
-        a(href="/users/kakao/start") Continue with Kakao &larr; 
+        include partials/social-login
     hr
-    div
+    div.auth-switch
         span Don't have an account? 
         a(href="/join") Log in now &larr;

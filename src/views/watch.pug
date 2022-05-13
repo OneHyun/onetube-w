@@ -4,7 +4,7 @@ block content
     video(src="/" + video.fileUrl, controls)
     div
         p=video.description
-        small=video.createdAt
+        small=uploadedTime
         h5 #{video.meta.views} #{video.meta.views <= 1 ? "view" : "views"}
     div
         small Uploaded by 

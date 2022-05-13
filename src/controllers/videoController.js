@@ -1,16 +1,39 @@
 import videoModel from "../models/video";
 import userModel from "../models/user";
-/* //example of using callback method
-  videoModel.find({}, (error, videos) => {
-    if (error) {
-      return res.render("server-error");
-    }
-    return res.render("home", { pageTitle: "Home", videos });
-  }); 
-*/
+
+function timeSince(date) {
+  var seconds = Math.floor((new Date() - date) / 1000);
+
+  var interval = seconds / 31536000;
+
+  if (interval > 1) {
+    return Math.floor(interval) + "년";
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + "달";
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + "일";
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + "시간";
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + "분";
+  }
+  return Math.floor(seconds) + "초";
+}
+
 export const home = async (req, res) => {
   try {
-    const videos = await videoModel.find({}).sort({ createdAt: "desc" });
+    const videos = await videoModel
+      .find({})
+      .sort({ createdAt: "desc" })
+      .populate("owner");
     return res.render("home", { pageTitle: "Home", videos });
   } catch (error) {
     return res.render("server-error", { error });
@@ -23,9 +46,11 @@ export const watch = async (req, res) => {
   if (!video)
     return res.status(404).render("404", { pageTitle: "Video Not Found." });
 
+  const uploadedTime = timeSince(video.createdAt) + " 전";
   return res.render("watch", {
     pageTitle: video.title,
     video,
+    uploadedTime,
   });
 };
 
@@ -135,7 +160,8 @@ export const search = async (req, res) => {
       .find({
         title: { $regex: new RegExp(keyword, "i") },
       })
-      .sort({ createdAt: "desc" });
+      .sort({ createdAt: "desc" })
+      .populate("owner");
   }
   return res.render("search", { pageTitle: "Search", videos });
 };
