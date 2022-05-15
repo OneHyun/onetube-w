@@ -25,7 +25,14 @@ export const postJoin = async (req, res) => {
   }
 
   try {
-    await userModel.create({ name, username, email, password, location });
+    await userModel.create({
+      name,
+      username,
+      email,
+      password,
+      location,
+      avatarUrl: "",
+    });
     return res.redirect("/login");
   } catch (error) {
     return res

@@ -4,6 +4,7 @@ header {
   justify-content: space-between;
   align-items: center;
 
+  min-width: 900px;
   .header__logo {
     color: $silver;
     text-shadow: 1px 1px 2px $silver;
@@ -32,5 +33,11 @@ header {
     color: $bg;
     padding: 5px 10px;
     border-radius: 5px;
+  }
+
+  .header__avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
   }
 }
