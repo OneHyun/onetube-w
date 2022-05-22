@@ -1,4 +1,6 @@
 const video = document.querySelector("video");
+const videoBox = document.querySelector(".videoBox");
+
 const play = document.getElementById("play");
 const playIcon = play.querySelector("i");
 const mute = document.getElementById("mute");
@@ -69,6 +71,13 @@ const handleTimeUpdate = () => {
   timeline.value = video.currentTime;
 };
 
+const handleEnded = () => {
+  const { id } = videoContainer.dataset;
+  fetch(`/api/videos/${id}/view`, {
+    method: "POST",
+  });
+};
+
 const handleTimelineChange = (event) => {
   const {
     target: { value },
@@ -127,8 +136,9 @@ volume.addEventListener("input", handleVolumeChange);
 
 video.addEventListener("loadedmetadata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
-video.addEventListener("dblclick", handleFullscreenClick);
-video.addEventListener("click", handlePlayClick);
+video.addEventListener("ended", handleEnded);
+videoBox.addEventListener("dblclick", handleFullscreenClick);
+videoBox.addEventListener("click", handlePlayClick);
 
 timeline.addEventListener("input", handleTimelineChange);
 timeline.addEventListener("mousedown", handleTimelineMousedown);

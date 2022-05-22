@@ -106,13 +106,15 @@ export const postUpload = async (req, res) => {
       user: { _id },
     },
     body: { title, description, hashtags },
-    file: { path: fileUrl },
+    files: { video, thumb },
   } = req;
+  console.log(video, thumb);
   try {
     const newVideo = await videoModel.create({
       title,
       description,
-      fileUrl,
+      fileUrl: videoModel.changePathFormula(video[0].path),
+      thumbUrl: videoModel.changePathFormula(thumb[0].path),
       owner: _id,
       hashtags: videoModel.formatHashtags(hashtags),
     });
@@ -164,4 +166,17 @@ export const search = async (req, res) => {
       .populate("owner");
   }
   return res.render("search", { pageTitle: "Search", videos });
+};
+
+export const registerView = async (req, res) => {
+  const { id } = req.params;
+  const video = await videoModel.findById(id);
+
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  video.meta.views += 1;
+  await video.save();
+  return res.sendStatus(200);
 };

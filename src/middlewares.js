@@ -38,7 +38,10 @@ export const avatarUpload = multer({
 
 export const videoUpload = multer({
   fileFilter: function (req, file, cb) {
-    if (file.mimetype.includes("video/")) {
+    if (
+      (file.fieldname === "video" && file.mimetype.includes("video/")) ||
+      (file.fieldname === "thumb" && file.mimetype.includes("image/"))
+    ) {
       cb(null, true);
     } else {
       cb(null, false);

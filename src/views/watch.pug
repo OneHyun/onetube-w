@@ -1,24 +1,25 @@
 extends ./base
 
 block content
-    div#videoContainer
+    div#videoContainer(data-id=video._id)
         div.videoBox
-            video(src="/" + video.fileUrl, controls)
+            video(src="/" + video.fileUrl, draggable=false)
         div#videoControls.videoControls
+            input(type="range", step="1", value=0, min="0")#timeline.videoControls__timeline
+            
             div.videoControls__play
                 span#play.videoControls_playBtn
                     i.fas.fa-play
-                div.videoControls__time
-                    span#currentTime 00:00
-                    span  / 
-                    span#totalTime 00:00
-            input(type="range", step="1", value=0, min="0")#timeline.videoControls__timeline
+            div.videoControls__time
+                span#currentTime 00:00
+                span  / 
+                span#totalTime 00:00
             
             div.videoControls__volume
-                input(type="range", step="0.1", value=0.5, min="0", max="1")#volume
                 span#mute
                     i.fas.fa-volume-up
-            div 
+                input(type="range", step="0.1", value=0.5, min="0", max="1")#volume
+            div.videoControls__screen
                 span#fullScreen
                     i.fas.fa-expand
     //-
