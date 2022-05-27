@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 });
 app.use(morgan("dev")); //logger
 app.use(express.urlencoded({ extended: true })); //express app can  understand form's value in js object style
+app.use(express.json());
 
 app.use(
   session({
@@ -30,6 +32,7 @@ app.use(
   })
 );
 
+app.use(flash());
 app.use(localsMiddleware);
 
 app.use("/uploads", express.static("uploads"));

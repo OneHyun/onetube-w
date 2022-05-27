@@ -11,6 +11,7 @@ export const protectMiddleware = (req, res, next) => {
   if (req.session.loggedIn) {
     return next();
   } else {
+    req.flash("error", "로그인이 필요합니다.");
     return res.redirect("/login");
   }
 };
@@ -19,6 +20,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
   if (!req.session.loggedIn) {
     return next();
   } else {
+    req.flash("error", "비정상적인 접근 경로입니다.");
     return res.redirect("/");
   }
 };

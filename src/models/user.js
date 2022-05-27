@@ -3,7 +3,9 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  avatarUrl: String,
+  avatarUrl: {
+    String,
+  },
   createdSocialLogin: { type: Boolean, default: false },
   username: { type: String, required: true, unique: true },
   password: {
@@ -14,6 +16,7 @@ const userSchema = new mongoose.Schema({
   },
   name: { type: String, required: true },
   location: String,
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
 });
 

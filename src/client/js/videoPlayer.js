@@ -15,6 +15,8 @@ const totalTime = document.getElementById("totalTime");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
 
+const commentInput = document.querySelector("#input-comment");
+
 let volumeValue = 0.5;
 video.volume = volumeValue;
 let isVideoPaused = true;
@@ -55,6 +57,7 @@ const handleVolumeChange = (event) => {
 
   muteIcon.classList = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
   video.volume = volumeValue;
+  console.log("volumeValue", volumeValue);
 };
 
 const formatTime = (seconds) => {
@@ -64,6 +67,9 @@ const formatTime = (seconds) => {
 const handleLoadedMetadata = () => {
   totalTime.innerText = formatTime(Math.floor(video.duration));
   timeline.max = Math.floor(video.duration);
+  if (video.readyState == 4) {
+    handlePlayClick();
+  }
 };
 
 const handleTimeUpdate = () => {
@@ -121,6 +127,9 @@ const handleMouseLeave = () => {
 };
 
 const handleKeyInput = (e) => {
+  if (commentInput && commentInput.id === e.target.id) {
+    return;
+  }
   const { key } = e;
   if (key === " ") {
     e.preventDefault();

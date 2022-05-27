@@ -23,7 +23,7 @@ const downloadFile = (fileUrl, fileName) => {
 
 const handleDownload = async () => {
   actionBtn.removeEventListener("click", handleDownload);
-  actionBtn.innerText = "Transcoding...";
+  actionBtn.innerText = "변환 중...";
   actionBtn.disabled = true;
 
   const ffmpeg = createFFmpeg({
@@ -70,10 +70,12 @@ const handleDownload = async () => {
     track.stop();
   });
   stream = null;
+
+  actionBtn.innerText = "저장 완료";
 };
 
 const handleStart = () => {
-  actionBtn.innerText = "Recording";
+  actionBtn.innerText = "녹화 중";
   actionBtn.disabled = true;
   actionBtn.removeEventListener("click", handleStart);
 
@@ -85,7 +87,7 @@ const handleStart = () => {
     video.loop = true;
     video.play();
 
-    actionBtn.innerText = "Download";
+    actionBtn.innerText = "녹화영상 저장";
     actionBtn.disabled = false;
     actionBtn.addEventListener("click", handleDownload);
   };
@@ -97,16 +99,25 @@ const handleStart = () => {
 };
 
 const init = async () => {
-  stream = await navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: {
-      width: 1024,
-      height: 576,
-    },
-  });
-  video.srcObject = stream;
-  video.play();
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {
+        width: 1024,
+        height: 576,
+      },
+    });
+
+    actionBtn.addEventListener("click", handleStart);
+
+    video.disabled = false;
+    video.srcObject = stream;
+    video.play();
+  } catch {
+    actionBtn.disabled = true;
+    actionBtn.innerText = "연결된 미디어를 찾지 못함";
+
+    video.disabled = true;
+  }
 };
 init();
-
-actionBtn.addEventListener("click", handleStart);

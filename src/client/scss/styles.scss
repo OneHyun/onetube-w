@@ -1,3 +1,12 @@
+// Fonts
+@font-face {
+  font-family: "MaplestoryOTFLight";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFLight.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 // Config
 @import "./config/_variable.scss";
 @import "./config/_reset.scss";
@@ -15,10 +24,16 @@
 @import "./screens/home.scss";
 @import "./screens/profile.scss";
 @import "./screens/edit-profile.scss";
-@import "./screens/search.scss";
 @import "./screens/upload.scss";
+@import "./screens/watch.scss";
 
 // Defaults
+
+* {
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -28,15 +43,57 @@ a {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  background-color: $bg;
+  font-family: "MaplestoryOTFLight";
+  background-color: #bed5ff;
   color: white;
+  height: 100vh;
 }
 
 main {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  margin-top: 50px;
+  padding: 0px 26px;
+  padding-top: 120px;
+}
+
+@keyframes goAway {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  15%,
+  80% {
+    transform: none;
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+.message {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: 260px;
+  padding: 10px 20px;
+  border-radius: 10000px;
+  text-align: center;
+
+  animation: goAway 5s ease-in-out forwards;
+
+  z-index: 99;
+  color: white;
+  &.error {
+    background-color: rgb(255, 99, 71);
+  }
+  &.info {
+    background-color: rgb(227, 134, 255);
+  }
+  &.sucess {
+    background-color: rgb(77, 175, 255);
+  }
 }

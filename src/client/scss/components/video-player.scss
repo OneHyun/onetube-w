@@ -2,10 +2,13 @@
   width: 100%;
   position: relative;
 
+  height: 650px;
+  max-height: 650px;
+
   .videoBox {
     width: 100%;
-    height: 100%;
     display: flex;
+    height: 100%;
     justify-content: center;
     background-color: black;
 
@@ -32,12 +35,12 @@
     margin: 0 auto;
     display: grid;
     grid-template-rows: 0.5fr 1fr;
-    grid-template-columns: 0.1fr 0.4fr 2fr 1fr;
+    grid-template-columns: 0.1fr 0.2fr 2fr 1fr;
     gap: 10px;
     justify-content: space-between;
     left: 0;
     box-sizing: border-box;
-    font-size: 12px;
+    font-size: 14px;
 
     .videoControls__play {
       display: flex;
@@ -68,6 +71,30 @@
     .videoControls__timeline {
       grid-column-start: 1;
       grid-column-end: 5;
+      width: 100%;
+    }
+
+    i {
+      font-size: 18px;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      background-color: rgba(189, 189, 189, 0.5);
+      border-radius: 5px;
+      border: 1px solid rgba(194, 181, 197, 0.4);
+
+      &:focus {
+        outline: none;
+      }
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background: #ffffff;
+        cursor: pointer;
+        height: 10px;
+        width: 10px;
+        border-radius: 3px;
+      }
     }
   }
 }

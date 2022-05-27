@@ -11,8 +11,8 @@ block content
                 span#play.videoControls_playBtn
                     i.fas.fa-play
             div.videoControls__time
-                span#currentTime 00:00
-                span  / 
+                span#currentTime 00:00;
+                span  &nbsp;/&nbsp;
                 span#totalTime 00:00
             
             div.videoControls__volume
@@ -22,18 +22,37 @@ block content
             div.videoControls__screen
                 span#fullScreen
                     i.fas.fa-expand
-    //-
-        div
-            p=video.description
-            small=uploadedTime
-            h5 #{video.meta.views} #{video.meta.views <= 1 ? "view" : "views"}
-        div
-            small Uploaded by 
-                a(href=`/users/${video.owner._id}`) #{video.owner.name}
+
+    div.video__data
+        p.video__title=video.title
+        h5 #{video.meta.views} #{video.meta.views <= 1 ? "view" : "views"}
+        small.video__owner Uploaded by 
+            a(href=`/users/${video.owner._id}`)=video.owner.name
+        small=uploadedTime
+        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
+        br
         if loggedInUser && (String(video.owner._id) === String(loggedInUser._id))
-            a(href=`${video.id}/edit`) Edit Video &larr;
+            a(href=`${video.id}/edit`).video__funtion Edit Video &larr;
             br
-            a(href=`${video.id}/delete`) Delete Video &larr;
+            a(href=`${video.id}/delete`).video__funtion Delete Video &larr;
+            br
+
+    if loggedIn
+        div.video__add-comments
+            form.video__comment-form#commentForm
+                input(placeholder="공개 댓글 추가")#input-comment
+                button 댓글 추가
+
+    div.video__comments
+        ul
+            each comment in video.comments.reverse()
+                li.video__comment(data-id=comment.id)
+                    i.fas.fa-comment
+                    span #{comment.text}
+                    if loggedInUser && (String(comment.owner._id) === String(loggedInUser._id))
+                        i.fas.fa-eraser#video__comment-delete--btn
 
 block scripts 
     script(src="/static/js/videoPlayer.js")
+    if loggedIn
+        script(src="/static/js/commentSection.js")

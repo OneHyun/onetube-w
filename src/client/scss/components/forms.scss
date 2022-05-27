@@ -41,3 +41,7 @@ input[type="submit"],
   cursor: pointer;
   display: block;
 }
+
+.social__btn:disabled {
+  background-color: rgba(255, 255, 255, 0.8);
+}

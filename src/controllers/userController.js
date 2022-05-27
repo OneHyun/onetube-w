@@ -10,17 +10,17 @@ export const postJoin = async (req, res) => {
   const pageTitle = "Join";
 
   if (password !== password2) {
+    req.flash("error", "비밀 번호가 일치하지 않습니다.");
     return res.status(400).render("join", {
       pageTitle,
-      errorMessage: "Password confirmation does not match.",
     });
   }
 
   const exists = await userModel.exists({ $or: [{ username }, { email }] });
   if (exists) {
+    req.flash("error", "동일한 아이디/이메일이 존재합니다.");
     return res.status(400).render("join", {
       pageTitle,
-      errorMessage: "This username/email is already taken.",
     });
   }
 
@@ -35,9 +35,10 @@ export const postJoin = async (req, res) => {
     });
     return res.redirect("/login");
   } catch (error) {
+    console.log(error._message);
     return res
       .status(400)
-      .render("join", { pageTitle, errorMessage: error._message });
+      .render("join", { pageTitle, errorMessage: "관리자에게 문의하세요." });
   }
 };
 
@@ -48,21 +49,22 @@ export const postLogin = async (req, res) => {
   const user = await userModel.findOne({ username, createdSocialLogin: false });
   const pageTitle = "Login";
   if (!user) {
+    req.flash("error", "해당 아이디가 존재하지 않습니다");
     return res.status(400).render("login", {
       pageTitle,
-      errorMessage: "An account with this username does not exists.",
     });
   }
 
   const correct = await bcrypt.compare(password, user.password);
   if (!correct) {
+    req.flash("error", "비밀 번호가 일치하지 않습니다.");
     return res.status(400).render("login", {
       pageTitle,
-      errorMessage: "Wrong password",
     });
   }
   req.session.loggedIn = true;
   req.session.user = user;
+  req.flash("info", `어서오세요. ${user.username}님`);
   return res.redirect("/");
 };
 
@@ -153,9 +155,11 @@ export const finishGithubLogin = async (req, res) => {
 
     req.session.loggedIn = true;
     req.session.user = user;
+    req.flash("info", `어서오세요. ${user.username}님`);
     return res.redirect("/");
   } else {
-    return res.redirect("/login", { errorMessage: "not accessed" });
+    req.flash("error", "요청이 정상적으로 처리되지 않았습니다.");
+    return res.redirect("/login");
   }
 };
 
@@ -198,6 +202,15 @@ export const finishKakaoLogin = async (req, res) => {
       })
     ).json();
 
+    if (
+      !(
+        userData.kakao_account.is_email_valid &&
+        userData.kakao_account.is_email_verified
+      )
+    ) {
+      req.flash("error", "유효하지 않거나, 인증 받지 않은 이메일입니다.");
+    }
+
     const findUsername = await userModel.findOne({ usernam: userData.login });
     //connect account through kakao email
     let user = await userModel.findOne({ email: userData.kakao_account.email });
@@ -214,7 +227,6 @@ export const finishKakaoLogin = async (req, res) => {
           username: { $regex: userData.kakao_account.profile.nickname },
         });
       }
-      console.log(count);
 
       user = await userModel.create({
         name: userData.kakao_account.profile.nickname,
@@ -230,17 +242,22 @@ export const finishKakaoLogin = async (req, res) => {
     }
     req.session.loggedIn = true;
     req.session.user = user;
-
+    req.flash("info", `어서오세요. ${user.username}님`);
     return res.redirect("/");
   } else {
-    return res.redirect("/login", { errorMessage: "not accessed" });
+    req.flash("error", "요청이 정상적으로 처리되지 않았습니다.");
+    return res.redirect("/login");
   }
 
   res.send(userData);
 };
 
 export const logout = (req, res) => {
-  req.session.destroy();
+  req.session.user = null;
+  res.locals.loggedInUser = req.session.user;
+  req.session.loggedIn = false;
+
+  req.flash("info", "로그아웃 되었습니다.");
   return res.redirect("/");
 };
 export const getEditProfile = (req, res) => {
@@ -257,9 +274,9 @@ export const postEditProfile = async (req, res) => {
 
   const findUsername = await userModel.findOne({ username });
   if (findUsername && findUsername.id != _id) {
+    req.flash("error", "이 아이디는 존재하는 아이디입니다.");
     return res.render("users/edit_profile", {
       pageTitle: "Edit Profile",
-      errorMessage: "Already user is exist",
     });
   }
 
@@ -279,6 +296,7 @@ export const postEditProfile = async (req, res) => {
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.createdSocialLogin === true) {
+    req.flash("error", "소셜 로그인 회원은 변경할 수 없습니다.");
     return res.redirect("/");
   }
   return res.render("users/change_password", { pageTitle: "Change Password" });
@@ -294,29 +312,33 @@ export const postChangePassword = async (req, res) => {
   const user = await userModel.findById(_id);
   const isMatchPW = await bcrypt.compare(oldPassword, user.password);
   if (!isMatchPW) {
+    req.flash("error", "비밀 번호가 일치하지 않습니다.");
     return res.status(400).render("users/change_password", {
       pageTitle: "Change Password",
-      errorMessage: "The current password is incorrect",
     });
   }
 
   if (oldPassword === newPassword) {
+    req.flash("error", "기존 비밀 번호와 동일합니다.");
     return res.status(400).render("users/change_password", {
       pageTitle,
-      errorMessage: "The old password equals new password",
     });
   }
 
   if (newPassword !== newPasswordConfirm) {
+    req.flash("error", "새로운 비밀 번호가 일치하지 않습니다.");
     return res.status(400).render("users/change_password", {
       pageTitle: "Change Password",
-      errorMessage: "The Password does not match the confirmation",
     });
   }
 
   user.password = newPassword;
   await user.save();
-  req.session.destroy();
+
+  req.session.user = null;
+  res.locals.loggedInUser = req.session.user;
+  req.session.loggedIn = false;
+  req.flash("info", "비밀 번호가 변경되었습니다.");
   return res.redirect("/login");
 };
 

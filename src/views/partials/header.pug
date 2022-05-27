@@ -1,29 +1,34 @@
-header
-    a(href="/").header__logo
-        i.fas.fa-dragon
+header.header__container
+    div.header__title
+        a(href="/").header__logo
+            i.fas.fa-dragon
+        span Test
 
-    form(method="GET", action="/search").search__form
-        input(placeholder="Search by title",name="keyword", type="text")
-        button
-            i.fas.fa-search
+    div.header__search
+        form(method="GET", action="/search").search__form
+            input(placeholder="제목 검색",name="keyword", type="text")
+            button
+                i.fas.fa-search
     nav
         ul
             
             if loggedIn
                 li
-                    a(href="/videos/upload") Upload Video
+                    a(href="/videos/upload")
+                        i.fas.fa-video
+                //-
+                    li
+                        a(href="/users/edit") 프로필 수정
                 li
-                    a(href="/users/edit") Edit Profile
-                li
-                    a(href="/users/logout") Log Out
+                    a(href="/users/logout") 로그 아웃
                 li
                     a(href=`/users/${loggedInUser._id}`)
-                        if loggedInUser.avatarUrl === ""
-                            span 😀
+                        if !loggedInUser.avatarUrl
+                            img.header__avatar(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3MAdEhs1pDTSXdLl7RZn9t_WwnWNwsnt5ZA&usqp=CAU")  
                         else
-                            img.header__avatar(src="/" + loggedInUser.avatarUrl)
+                            img.header__avatar(src=`/${loggedInUser.avatarUrl}`)
             else
                 li
-                    a(href="/login") Login
+                    a(href="/login") 로그인
                 li 
-                    a(href="/join").header__btn Join
+                    a(href="/join").header__btn 회원 가입
