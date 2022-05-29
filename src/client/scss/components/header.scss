@@ -84,6 +84,12 @@ header {
     color: $bg;
     padding: 5px 10px;
     border-radius: 5px;
+
+    transition: background-color 1s ease-in-out, color 1s ease-in-out;
+    &:hover {
+      background-color: rgb(161, 252, 255);
+      color: white;
+    }
   }
 
   .header__avatar {

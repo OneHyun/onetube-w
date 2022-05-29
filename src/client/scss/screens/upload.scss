@@ -1,13 +1,29 @@
 .upload__container {
   width: 100%;
+  display: flex;
+  min-width: 700px;
   .upload__video {
+    width: 80%;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     video {
-      max-width: 100%;
+      width: 80%;
+      background-color: gray;
+      max-width: 80%;
       margin-bottom: 10px;
+    }
+
+    .upload__video-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .upload__video-comment {
+      margin-top: 10px;
+      font-size: 12px;
     }
   }
 }
