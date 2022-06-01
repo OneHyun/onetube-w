@@ -35,7 +35,6 @@ export const postJoin = async (req, res) => {
     });
     return res.redirect("/login");
   } catch (error) {
-    console.log(error._message);
     return res
       .status(400)
       .render("join", { pageTitle, errorMessage: "관리자에게 문의하세요." });
@@ -138,7 +137,6 @@ export const finishGithubLogin = async (req, res) => {
           username: { $regex: userData.login },
         });
       }
-      console.log(count);
 
       user = await userModel.create({
         name: userData.name ? userData.name : userData.login,

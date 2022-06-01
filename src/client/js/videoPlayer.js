@@ -57,7 +57,6 @@ const handleVolumeChange = (event) => {
 
   muteIcon.classList = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
   video.volume = volumeValue;
-  console.log("volumeValue", volumeValue);
 };
 
 const formatTime = (seconds) => {

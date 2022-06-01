@@ -11,8 +11,6 @@ module.exports = {
     commentSection: BASE_JS + "commentSection.js",
     ratingSection: BASE_JS + "ratingSection.js",
   },
-  mode: "development",
-  watch: true,
   output: {
     filename: "js/[name].js",
     path: path.resolve(__dirname, "./assets"),
