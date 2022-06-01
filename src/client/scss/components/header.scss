@@ -5,19 +5,15 @@ header {
   width: 100%;
   box-sizing: border-box;
   height: 58px;
-  padding: 20px 26px;
+  padding: 30px 26px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   text-align: center;
-
-  background-color: inherit;
   white-space: nowrap;
-
   border-bottom: 1px #b7c8ff solid;
   .header__title {
-    color: $silver;
     text-shadow: 1px 1px 2px $silver;
     font-size: 28px;
 
@@ -32,7 +28,6 @@ header {
     width: 40%;
     display: flex;
     align-items: center;
-
     .search__form {
       width: 100%;
       display: flex;
@@ -80,21 +75,21 @@ header {
   }
 
   .header__btn {
-    background-color: white;
-    color: $bg;
     padding: 5px 10px;
     border-radius: 5px;
 
-    transition: background-color 1s ease-in-out, color 1s ease-in-out;
-    &:hover {
-      background-color: rgb(161, 252, 255);
-      color: white;
-    }
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   }
 
   .header__avatar {
     width: 45px;
     height: 45px;
     border-radius: 50%;
+  }
+
+  #mode-check {
+    background: none;
+    border-radius: 50%;
+    padding: 5px;
   }
 }

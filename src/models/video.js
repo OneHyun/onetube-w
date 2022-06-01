@@ -15,7 +15,15 @@ const videoSchema = new mongoose.Schema({
   hashtags: [{ type: String, trim: true }],
   meta: {
     views: { type: Number, default: 0, required: true },
-    rating: { type: Number, default: 0, required: true },
+    rating: {
+      count: { type: Number, default: 0, required: true },
+      user: [
+        {
+          type: String,
+          required: true,
+        },
+      ],
+    },
   },
   comments: [
     { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Comment" },
@@ -30,7 +38,7 @@ const videoSchema = new mongoose.Schema({
 videoSchema.static("formatHashtags", function (hashtags) {
   return hashtags
     .split(",")
-    .map((word) => `#${word.replaceAll("#", "").trim()}`);
+    .map((word) => `#${word.replaceAll("#", "").replaceAll(" ", "")}`);
 });
 videoSchema.static("changePathFormula", (urlPath) => {
   return urlPath.replace(/\\/g, "/");

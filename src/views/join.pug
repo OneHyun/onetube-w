@@ -3,17 +3,18 @@ extends ./base
 block content 
     if errorMessage
         span=errorMessage
-    form(method="POST")
-        input(name="name", placeholder="Name", type="text", required)
-        input(name="username", placeholder="UserName", type="text", required)
-        input(name="email", placeholder="Email", type="email", required)
-        input(name="password", placeholder="Password", type="password", required)
-        input(name="password2", placeholder="Confirm Password", type="password", required)
-        input(name="location", placeholder="Location", type="text")
-        input(type="submit", value="Join")
+    form.join__form(method="POST")
+        input(name="name", placeholder="이름", type="text", required)
+        label(for="username") 사용자 이름은 아이디로 사용됩니다.
+        input(name="username", placeholder="사용자 이름", type="text", required, id="username")
+        input(name="email", placeholder="이메일", type="email", required)
+        input(name="password", placeholder="비밀번호", type="password", required)
+        input(name="password2", placeholder="비밀번호 확인", type="password", required)
+        input(name="location", placeholder="거주 지역", type="text")
+        input(type="submit", value="회원 가입")
 
         include partials/social-login
     hr
     div.auth-switch
-        span Already have an account? 
-        a(href="/login") Login now &larr;
+        span 계정이 이미 있으시다면 ?
+        a(href="/login") &nbsp;로그인 화면으로 이동 &larr;

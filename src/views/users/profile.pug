@@ -5,7 +5,7 @@ block content
     div.profile__data
         div
         div.profile__data-user
-            if !loggedInUser.avatarUrl
+            if user.avatarUrl=="{}"
                 img.header__avatar.avatar(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3MAdEhs1pDTSXdLl7RZn9t_WwnWNwsnt5ZA&usqp=CAU")
             else
                 img.header__avatar(src="/" + user.avatarUrl).avatar
@@ -16,13 +16,5 @@ block content
     div.video-grid
         each video in user.videos
             +video(video)
-            +video(video)
-            +video(video)
-            +video(video)
-            +video(video)
-            +video(video)
-            +video(video)
-            +video(video)
-            
         else
-            span.empty__message No videos found
+            span.empty__message 비디오를 찾을 수 없습니다.

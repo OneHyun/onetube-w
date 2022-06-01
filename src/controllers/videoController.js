@@ -1,6 +1,7 @@
 import videoModel from "../models/video";
 import userModel from "../models/user";
 import commentModel from "../models/comment";
+import { async } from "regenerator-runtime";
 
 function timeSince(date) {
   var seconds = Math.floor((new Date() - date) / 1000);
@@ -46,15 +47,50 @@ export const watch = async (req, res) => {
   const video = await videoModel
     .findById(id)
     .populate("owner")
-    .populate("comments");
-  if (!video)
-    return res.status(404).render("404", { pageTitle: "Video Not Found." });
+    .populate("comments")
+    .populate("comments.owner");
+
+  if (!video) {
+    req.flash("error", "해당 비디오를 찾을 수 없습니다.");
+    return res.status(404).redirect("/");
+  }
 
   const uploadedTime = timeSince(video.createdAt) + " 전";
+  const printUploadedDay = new Date(video.createdAt)
+    .toLocaleDateString("ko-kr")
+    .replaceAll(" ", "");
+
+  let alreadyRecommand = false;
+  if (req.session.user) {
+    alreadyRecommand = video.meta.rating.user.includes(req.session.user._id);
+  }
+  let hashtags = "";
+  video.hashtags.forEach((element) => {
+    hashtags += String(element) + " ";
+  });
+
+  let comments = [];
+  for (const item of video.comments) {
+    const comment = await commentModel.findById(item.id).populate("owner");
+    comments.unshift({
+      id: comment.id,
+      text: comment.text,
+      username: comment.owner.username,
+      owner_id: comment.owner._id,
+      createdAt: new Date(comment.createdAt)
+        .toLocaleDateString("ko-kr")
+        .replaceAll(" ", ""),
+    });
+  }
+
   return res.render("watch", {
     pageTitle: video.title,
     video,
     uploadedTime,
+    printUploadedDay,
+    alreadyRecommand,
+    hashtags,
+    comments,
   });
 };
 
@@ -66,8 +102,10 @@ export const getEdit = async (req, res) => {
     },
   } = req;
   const video = await videoModel.findById(id);
-  if (!video)
-    return res.status(404).render("404", { pageTitle: "Video Not Found." });
+  if (!video) {
+    req.flash("error", "해당 비디오를 찾을 수 없습니다.");
+    return res.status(404).redirect("/");
+  }
 
   if (String(video.owner) !== String(_id)) {
     req.flash("error", "비정상적인 접근 경로입니다.");
@@ -86,7 +124,8 @@ export const postEdit = async (req, res) => {
 
   const video = await videoModel.findById(id);
   if (!video) {
-    return res.status(404).render("404", { pageTitle: "Video not found." });
+    req.flash("error", "해당 비디오를 찾을 수 없습니다.");
+    return res.status(404).redirect("/");
   }
 
   if (String(video.owner) !== String(_id)) {
@@ -116,7 +155,7 @@ export const postUpload = async (req, res) => {
     body: { title, description, hashtags },
     files: { video, thumb },
   } = req;
-  console.log(video, thumb);
+
   try {
     const newVideo = await videoModel.create({
       title,
@@ -147,9 +186,8 @@ export const deleteVideo = async (req, res) => {
 
   const video = await videoModel.findById(id);
   if (!video) {
-    return res
-      .status(404)
-      .render("404", { pageTitle: "업로드된 비디오가 없습니다." });
+    req.flash("error", "업로드된 비디오가 없습니다.");
+    return res.status(404).redirect("/");
   }
 
   if (String(video.owner) !== String(_id)) {
@@ -223,7 +261,6 @@ export const deleteComment = async (req, res) => {
   const {
     user: { _id },
   } = req.session;
-
   const comment = await commentModel.findById(id).populate("owner");
   if (!comment) {
     return res.sendStatus(404);
@@ -239,4 +276,42 @@ export const deleteComment = async (req, res) => {
   user.save();
 
   return res.sendStatus(201);
+};
+
+export const updownRecommand = async (req, res) => {
+  const { id } = req.params;
+  if (!req.session.user) {
+    return res.sendStatus(403);
+  }
+  const {
+    user: { _id },
+  } = req.session;
+
+  const video = await videoModel.findById(id);
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  const alreadyRecommand = video.meta.rating.user.includes(_id);
+  if (alreadyRecommand) {
+    video.meta.rating.count -= 1;
+    video.meta.rating.user.splice(video.meta.rating.user.indexOf(_id), 1);
+    await video.save();
+
+    const user = await userModel.findById(_id);
+    user.ratings.splice(user.ratings.indexOf(id), 1);
+    await user.save();
+  } else {
+    video.meta.rating.count += 1;
+    video.meta.rating.user.push(_id);
+    await video.save();
+
+    const user = await userModel.findById(_id);
+    user.ratings.push(id);
+    await user.save();
+  }
+
+  return res
+    .status(201)
+    .json({ isCancel: alreadyRecommand, count: video.meta.rating.count });
 };

@@ -82,6 +82,7 @@ const handleEnded = () => {
   fetch(`/api/videos/${id}/view`, {
     method: "POST",
   });
+  playIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
 };
 
 const handleTimelineChange = (event) => {
@@ -131,9 +132,19 @@ const handleKeyInput = (e) => {
     return;
   }
   const { key } = e;
-  if (key === " ") {
-    e.preventDefault();
-    handlePlayClick();
+
+  e.preventDefault();
+  switch (key) {
+    case " ":
+    case "k":
+      handlePlayClick();
+      break;
+    case "f":
+      handleFullscreenClick();
+      break;
+    case "m":
+      handleMuteClick();
+      break;
   }
 };
 

@@ -1,23 +1,26 @@
 header.header__container
     div.header__title
         a(href="/").header__logo
-            i.fas.fa-dragon
-        span Test
+            i.fas.fa-globe
+                span neTube
 
     div.header__search
         form(method="GET", action="/search").search__form
             input(placeholder="제목 검색",name="keyword", type="text")
             button
                 i.fas.fa-search
+
     nav
         ul
-            
+            li 
+                button#mode-check
+                    i.fas.fa-moon#mode-icon
             if loggedIn
                 li
                     a(href="/videos/upload")
                         i.fas.fa-video
                 li
-                    a(href="/users/logout") 로그 아웃
+                    a(href="/users/logout").header__btn 로그 아웃
                 li
                     a(href=`/users/${loggedInUser._id}`)
                         if !loggedInUser.avatarUrl
@@ -26,6 +29,6 @@ header.header__container
                             img.header__avatar(src=`/${loggedInUser.avatarUrl}`)
             else
                 li
-                    a(href="/login") 로그인
+                    a(href="/login").header__btn 로그인
                 li 
                     a(href="/join").header__btn 회원 가입

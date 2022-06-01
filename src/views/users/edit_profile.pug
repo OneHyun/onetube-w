@@ -1,20 +1,20 @@
 extends ../base
 
 block content
-    form(method="POST", enctype="multipart/form-data").edit-profile__form
+    form.edit-profile__form(method="POST", enctype="multipart/form-data")
         label(for="avatar") 아바타 이미지
         input(type="file", id="avatar", name="avatar", accept=".png, .jpg, .jpeg")
 
         label(for="name") 이름
-        input(name="name", placeholder="Name", type="text", value=loggedInUser.name, required)
+        input(name="name", id="name", placeholder="이름", type="text", value=loggedInUser.name, required)
 
-        label(for="username") 사용자 이름
-        input(name="username", placeholder="UserName", type="text", value=loggedInUser.username, required)
+        label(for="username") 사용자 이름은 아이디로 사용됩니다.
+        input(name="username", id="username", placeholder="사용자 이름", type="text", value=loggedInUser.username, required)
 
         label(for="location") 거주 지역
-        input(name="location", placeholder="Location", type="text", value=loggedInUser.location)
+        input(name="location", id="location", placeholder="거주 지역", type="text", value=loggedInUser.location)
 
-        input(type="submit", value="Update Profile")
+        input(type="submit", value="프로필 수정 완료")
 
         if !loggedInUser.createdSocialLogin
             hr

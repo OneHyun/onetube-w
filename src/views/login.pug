@@ -3,13 +3,13 @@ extends ./base
 block content 
     if errorMessage
         span=errorMessage
-    form(method="POST")
-        input(name="username", placeholder="UserName", type="text", required)
-        input(name="password", placeholder="Password", type="password", required)
-        input(type="submit", value="Login")
+    form.login__form(method="POST")
+        input(name="username", placeholder="아이디(사용자 이름)", type="text", required)
+        input(name="password", placeholder="비밀번호", type="password", required)
+        input(type="submit", value="로그인")
 
         include partials/social-login
     hr
     div.auth-switch
-        span Don't have an account? 
-        a(href="/join") Join now &larr;
+        span 계정이 없으신가요? 
+        a(href="/join") &nbsp;회원 가입 화면으로 이동 &larr;

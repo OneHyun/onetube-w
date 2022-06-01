@@ -1,10 +1,12 @@
 extends ./base
 
 block content
-    h4 Update Video
-    form(method="POST")
-        input(name="title", placeholder="Video Title", type="text", value=video.title, required, minlength=5, maxlength=40)
-        input(name="description", placeholder="Description", type="text", value=video.description, required, minlength=5)
-        input(name="hashtags", placeholder="Hashtags, separated by comma.", type="text", value=video.hashtags.join(), required)
+    form.edit-video__form(method="POST")
+        label(for="title") 영상 제목
+        input(name="title", placeholder="제목", type="text", id="title", value=video.title, required, minlength=5, maxlength=40)
+        label(for="description") 영상 설명
+        input(name="description", placeholder="설명", type="text", id="description", value=video.description, required, minlength=5)
+        label(for="hashtags") 해시 태그는 콤마( , )로 구분됩니다
+        input(name="hashtags", placeholder="당신만의 해시 태그를 남겨주세요", id="hashtags", type="text", value=video.hashtags.join(), required)
         
         input(type="submit", value="Save")  

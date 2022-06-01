@@ -11,13 +11,14 @@ block content
             span=errorMessage
         div.upload__form
             form(method="POST", enctype="multipart/form-data")
-                label(for="video") Video File
+                label(for="video") 영상 파일
                 input(name="video", type="file", accept="video/*", required, id="video")
-                label(for="thumb") Thumbnail File
+                label(for="thumb") 영상 썸네일
                 input(name="thumb", type="file", accept="image/*", required, id="thumb")
-                input(name="title", placeholder="Title", type="text", required, minlength=5, maxlength=40)
-                input(name="description", placeholder="Description", type="text", required, minlength=5)
-                input(name="hashtags", placeholder="Hashtags, separated by comma.", type="text" required)
+                input(name="title", placeholder="제목", type="text", required, minlength=5, maxlength=40)
+                input(name="description", placeholder="설명", type="text", required, minlength=5)
+                label(for="hashtags") 해시 태그는 콤마( , )로 구분됩니다
+                input(name="hashtags", placeholder="당신만의 해시 태그를 남겨주세요", type="text" required, id="hashtags")
                 input(type="submit", value="Upload Video")
 
 block scripts 

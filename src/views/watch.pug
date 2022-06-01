@@ -11,7 +11,7 @@ block content
                 span#play.videoControls_playBtn
                     i.fas.fa-play
             div.videoControls__time
-                span#currentTime 00:00;
+                span#currentTime 00:00
                 span  &nbsp;/&nbsp;
                 span#totalTime 00:00
             
@@ -24,35 +24,78 @@ block content
                     i.fas.fa-expand
 
     div.video__data
+        span.video__hashtags=hashtags
         p.video__title=video.title
-        h5 #{video.meta.views} #{video.meta.views <= 1 ? "view" : "views"}
-        small.video__owner Uploaded by 
-            a(href=`/users/${video.owner._id}`)=video.owner.name
-        small=uploadedTime
-        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
-        br
-        if loggedInUser && (String(video.owner._id) === String(loggedInUser._id))
-            a(href=`${video.id}/edit`).video__funtion Edit Video &larr;
-            br
-            a(href=`${video.id}/delete`).video__funtion Delete Video &larr;
-            br
+        div.video__data--info
+            div.video__data--info-meta
+                small 조회수 #{video.meta.views} 회
+                small &nbsp;&middot;&nbsp;
+                small.video__createdAt=printUploadedDay
+                small &nbsp;
+                small (#{uploadedTime})
+            div.video__data--info-functions
+                div.video__data--info-function#video__like
+                    if loggedInUser
+                        if alreadyRecommand
+                            i.fas.fa-thumbs-up#video__like--icon
+                        else 
+                            i.far.fa-thumbs-up#video__like--icon
+                    else
+                        i.far.fa-thumbs-up#video__like--icon
+                    span#video__like--span #{video.meta.rating.count} 개
+                div.video__data--info-function
+                    i.fas.fa-share-alt
+                    span 공유
+                div.video__data--info-function
+                    i.fas.fa-download
+                    span 저장
+                div.video__data--info-sign
+                    span 로그인이 필요한 기능입니다.
+        
+        hr
 
+        div.video__info
+            div.video__info-personal
+                a(href=`/users/${video.owner._id}`)
+                    if video.owner.avatarUrl=="{}"
+                        img.video__profile(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3MAdEhs1pDTSXdLl7RZn9t_WwnWNwsnt5ZA&usqp=CAU")  
+                    else
+                        img.video__profile(src="/" + video.owner.avatarUrl)
+                div.video__info-name
+                    small 영상 게시자
+                    small.video__owner #{video.owner.name} 님
+            
+            br
+            if loggedInUser && (String(video.owner._id) === String(loggedInUser._id))
+                div.video__edit-btns
+                    a(href=`${video.id}/edit`).video__function--btn 영상 수정
+                    br
+                    a(href=`${video.id}/delete`).video__function--btn 영상 삭제
+
+        div.video__info-video
+            span 영상 설명
+            span=video.description
+        hr
     if loggedIn
         div.video__add-comments
-            form.video__comment-form#commentForm
+            form.video__comment-form#commentForm(data-username=loggedInUser.username)
                 input(placeholder="공개 댓글 추가")#input-comment
-                button 댓글 추가
+                button.video__comment-btn 댓글
 
     div.video__comments
         ul
-            each comment in video.comments.reverse()
+            each comment in comments
                 li.video__comment(data-id=comment.id)
-                    i.fas.fa-comment
-                    span #{comment.text}
-                    if loggedInUser && (String(comment.owner._id) === String(loggedInUser._id))
+                    div.video__comment--left
+                        i.fas.fa-comment
+                        div.video__comment--spans
+                            span #{comment.username}님이 작성함 #{comment.createdAt}
+                            span #{comment.text}
+                    if loggedInUser && (String(comment.owner_id) === String(loggedInUser._id))
                         i.fas.fa-eraser#video__comment-delete--btn
 
 block scripts 
     script(src="/static/js/videoPlayer.js")
     if loggedIn
         script(src="/static/js/commentSection.js")
+    script(src="/static/js/ratingSection.js")

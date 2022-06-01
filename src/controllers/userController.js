@@ -355,7 +355,8 @@ export const see = async (req, res) => {
     },
   });
   if (!user) {
-    return res.status(404).render("404", { pageTitle: "User not found." });
+    req.flash("error", "해당 유저를 찾을 수 없습니다.");
+    return res.status(404).redirect("/");
   }
 
   return res.render("users/profile", {

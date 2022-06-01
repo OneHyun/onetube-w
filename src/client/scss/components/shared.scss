@@ -8,14 +8,38 @@ video {
 
 .video-grid {
   display: grid;
-  gap: 50px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  min-width: 250px;
 }
 
 .auth-switch {
   text-align: center;
   margin-top: 40px;
-  a {
-    text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+  .video-grid {
+    gap: 20px;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 500px) {
+  .video-grid {
+    gap: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 800px) {
+  .video-grid {
+    gap: 45px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .video-grid {
+    gap: 50px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
