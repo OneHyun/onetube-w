@@ -8,7 +8,7 @@ block content
             if user.avatarUrl=="{}"
                 img.header__avatar.avatar(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3MAdEhs1pDTSXdLl7RZn9t_WwnWNwsnt5ZA&usqp=CAU")
             else
-                img.header__avatar(src="/" + user.avatarUrl).avatar
+                img.header__avatar(src=user.avatarUrl).avatar
             h3=user.name
         div.profile__data-btns
             a(href="/users/edit") 프로필 수정

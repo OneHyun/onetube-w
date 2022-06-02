@@ -26,7 +26,7 @@ header.header__container
                         if !loggedInUser.avatarUrl
                             img.header__avatar(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3MAdEhs1pDTSXdLl7RZn9t_WwnWNwsnt5ZA&usqp=CAU")  
                         else
-                            img.header__avatar(src=`/${loggedInUser.avatarUrl}`)
+                            img.header__avatar(src=`${loggedInUser.avatarUrl}`)
             else
                 li
                     a(href="/login").header__btn 로그인
