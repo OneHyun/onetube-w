@@ -16,6 +16,7 @@ const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
 
 const commentInput = document.querySelector("#input-comment");
+const searchInput = document.querySelector("#search-comment");
 
 let volumeValue = 0.5;
 video.volume = volumeValue;
@@ -127,7 +128,10 @@ const handleMouseLeave = () => {
 };
 
 const handleKeyInput = (e) => {
-  if (commentInput && commentInput.id === e.target.id) {
+  if (
+    (commentInput && commentInput.id === e.target.id) ||
+    (searchInput && searchInput.id === e.target.id)
+  ) {
     return;
   }
   const { key } = e;
