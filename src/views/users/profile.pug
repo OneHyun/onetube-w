@@ -6,7 +6,7 @@ block content
         div
         div.profile__data-user
             if user.avatarUrl=="{}"
-                img.header__avatar.avatar(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3MAdEhs1pDTSXdLl7RZn9t_WwnWNwsnt5ZA&usqp=CAU")
+                img.header__avatar.avatar(src="https://onetube-w.s3.ap-northeast-2.amazonaws.com/default.png")
             else
                 img.header__avatar(src=user.avatarUrl).avatar
             h3=user.name

@@ -58,7 +58,7 @@ block content
             div.video__info-personal
                 a(href=`/users/${video.owner._id}`)
                     if video.owner.avatarUrl=="{}"
-                        img.video__profile(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3MAdEhs1pDTSXdLl7RZn9t_WwnWNwsnt5ZA&usqp=CAU")  
+                        img.video__profile(src="https://onetube-w.s3.ap-northeast-2.amazonaws.com/default.png")  
                     else
                         img.video__profile(src=video.owner.avatarUrl)
                 div.video__info-name
