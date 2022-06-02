@@ -70,9 +70,11 @@ export const watch = async (req, res) => {
   });
 
   let comments = [];
-  for (const item of video.comments) {
+  let count = 0;
+  for (const item of video.comments.reverse()) {
+    count += 1;
     const comment = await commentModel.findById(item.id).populate("owner");
-    comments.unshift({
+    comments.push({
       id: comment.id,
       text: comment.text,
       username: comment.owner.username,
@@ -81,6 +83,9 @@ export const watch = async (req, res) => {
         .toLocaleDateString("ko-kr")
         .replaceAll(" ", ""),
     });
+    if (count >= 25) {
+      break;
+    }
   }
 
   return res.render("watch", {
