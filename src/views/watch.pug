@@ -3,7 +3,7 @@ extends ./base
 block content
     div#videoContainer(data-id=video._id)
         div.videoBox
-            video(src="/" + video.fileUrl, draggable=false)
+            video(src=video.fileUrl, draggable=false)
         div#videoControls.videoControls
             input(type="range", step="1", value=0, min="0")#timeline.videoControls__timeline
             
@@ -60,7 +60,7 @@ block content
                     if video.owner.avatarUrl=="{}"
                         img.video__profile(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3MAdEhs1pDTSXdLl7RZn9t_WwnWNwsnt5ZA&usqp=CAU")  
                     else
-                        img.video__profile(src="/" + video.owner.avatarUrl)
+                        img.video__profile(src=video.owner.avatarUrl)
                 div.video__info-name
                     small 영상 게시자
                     small.video__owner #{video.owner.name} 님

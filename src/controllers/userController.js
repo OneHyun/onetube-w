@@ -83,7 +83,7 @@ export const finishGithubLogin = async (req, res) => {
   const baseUrl = "https://github.com/login/oauth/access_token";
   const config = {
     client_id: process.env.GITH_CLIENT,
-    client_secret: process.env.GITH_SECRECT,
+    client_secret: process.env.GITH_SECRET,
     code: req.query.code,
   };
 
@@ -281,7 +281,7 @@ export const postEditProfile = async (req, res) => {
   const updateUser = await userModel.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? `/${file.path}` : avatarUrl,
+      avatarUrl: file ? file.location : avatarUrl,
       name,
       username,
       location,

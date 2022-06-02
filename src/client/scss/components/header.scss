@@ -3,6 +3,7 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+  min-width: 610px;
   box-sizing: border-box;
   height: 58px;
   padding: 30px 26px;
@@ -28,6 +29,7 @@ header {
     width: 40%;
     display: flex;
     align-items: center;
+    margin-right: 10px;
     .search__form {
       width: 100%;
       display: flex;
