@@ -16,14 +16,14 @@ video {
   margin-top: 40px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 549px) {
   .video-grid {
     gap: 20px;
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 500px) {
+@media (min-width: 550px) {
   .video-grid {
     gap: 20px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
