@@ -18,6 +18,10 @@ const videoControls = document.getElementById("videoControls");
 const commentInput = document.querySelector("#input-comment");
 const searchInput = document.querySelector("#search-comment");
 
+const videoShareIcon = document.getElementById("video__share--icon");
+const shareSign = document.getElementById("video__data--info-share");
+const VIEW_SIGN = "load_sign";
+
 let volumeValue = 0.5;
 video.volume = volumeValue;
 let isVideoPaused = true;
@@ -151,6 +155,18 @@ const handleKeyInput = (e) => {
   }
 };
 
+const handleCopyURL = () => {
+  shareSign.classList.add(VIEW_SIGN);
+  videoShareIcon.removeEventListener("click", handleCopyURL);
+  setTimeout(() => {
+    shareSign.classList.remove(VIEW_SIGN);
+  }, 2000);
+  setTimeout(() => {
+    videoShareIcon.addEventListener("click", handleCopyURL);
+  }, 2500);
+  navigator.clipboard.writeText(window.document.location.href);
+};
+
 window.addEventListener("keydown", handleKeyInput);
 
 play.addEventListener("click", handlePlayClick);
@@ -173,6 +189,9 @@ videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 videoContainer.addEventListener("fullscreenchange", handleFullscreenChange);
 
+videoShareIcon.addEventListener("click", handleCopyURL);
 if (video.readyState == 4) {
   handleLoadedMetadata();
 }
+
+shareSign.classList.add("video__data--preload");

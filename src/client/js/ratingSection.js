@@ -1,7 +1,7 @@
 const likeBtn = document.getElementById("video__like");
 const likeIcon = document.getElementById("video__like--icon");
 const likeSpan = document.getElementById("video__like--span");
-const recommandSign = document.querySelector(".video__data--info-sign");
+const recommandSign = document.getElementById("video__data--info-like");
 
 const VIEW_SIGN = "load_sign";
 const handleRecommand = async (event) => {
