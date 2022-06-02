@@ -11,7 +11,7 @@ block content
             span=errorMessage
         div.upload__form
             form(method="POST", enctype="multipart/form-data")
-                label(for="video") 영상 파일
+                label(for="video") 영상 파일 (10 MB 이하의 영상만 등록 가능합니다.)
                 input(name="video", type="file", accept="video/*", required, id="video")
                 label(for="thumb") 영상 썸네일
                 input(name="thumb", type="file", accept="image/*", required, id="thumb")
