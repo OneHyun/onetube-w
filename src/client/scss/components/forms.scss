@@ -34,6 +34,11 @@ input:not(input[type="range"], [type="checkbox"]) {
   &::placeholder {
     color: rgba(255, 255, 255, 0.7);
   }
+
+  transition: background-color 0.3s linear;
+  &:hover {
+    background-color: rgb(71, 71, 71);
+  }
 }
 
 input[type="submit"],

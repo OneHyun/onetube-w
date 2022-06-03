@@ -20,6 +20,7 @@
       color: #ffffff;
       opacity: 0.85;
     }
+    transition: background-color 0.3s linear;
     &:hover {
       background-color: #5a5a5a;
     }
@@ -36,7 +37,7 @@
       color: #000000;
       opacity: 0.85;
     }
-
+    transition: background-color 0.3s linear;
     &:hover {
       background-color: #fff068;
     }
