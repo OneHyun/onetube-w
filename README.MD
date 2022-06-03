@@ -46,6 +46,9 @@
 
 완강 후, 없어서 아쉬움을 가져보던 기능들에 대해, 아쉬움 보다는 직접 만들어보면 어떨까? 하는 생각을 가져 보았고, 시작하게 되었습니다.
 
+<details> 
+<summary>내용 펼치기</summary>
+
 ### 다크 모드
 
 자주 사용하던 모드인 만큼, 이것을 직접적으로 적용해보자 하는 다짐과 함께 처음 만들어본 추가적 기능입니다.
@@ -131,6 +134,8 @@ video model -> meta -> rating 속성에서 user id 정보와 count 만을 가짐
 #### 적용 사진
 
 <img src="./read_src/function_png/url_share_in.png" width="400" height="100"/>
+
+</details>
 
 ---
 
