@@ -24,11 +24,13 @@
 
 #### FrontEnd
 
+<p>
 <img src="./read_src/tech_icon/html5.png" width="75" height="75"/>
 <img src="./read_src/tech_icon/css3.png" width="75" height="75"/>
 <img src="./read_src/tech_icon/es6.png" width="75" height="75"/>
 <img src="./read_src/tech_icon/pug.png" width="75" height="75"/>
 <img src="./read_src/tech_icon/js.png" width="75" height="75"/>
+</p>
 
 #### BackEnd
 
@@ -48,7 +50,7 @@
 
 자주 사용하던 모드인 만큼, 이것을 직접적으로 적용해보자 하는 다짐과 함께 처음 만들어본 추가적 기능입니다.
 
-<img src="./read_src/function_png/darkmode.png" width="200" height="300"/>
+<img src="./read_src/function_png/darkmode.png" width="400" height="300"/>
 
 ##### Before, 구현 중 발생한 문제점은 ?
 
@@ -66,8 +68,8 @@ color-theme 라는 어트리뷰트를 set하여, 미디어 쿼리를 통해 적�
 
 ##### 적용 사진
 
-<img src="./read_src/function_png/darkmode_light.png" width="150" height="200"/>
-<img src="./read_src/function_png/darkmode_dark.png" width="150" height="200"/>
+<img src="./read_src/function_png/darkmode_light.png" width="400" height="200"/>
+<img src="./read_src/function_png/darkmode_dark.png" width="400" height="200"/>
 
 ---
 
@@ -75,7 +77,7 @@ color-theme 라는 어트리뷰트를 set하여, 미디어 쿼리를 통해 적�
 
 기능을 구현하고자 한 의지만큼, 많은 시행 착오가 있었던 기능인 것 같습니다.
 
-<img src="./read_src/function_png/recommend.png" width="150" height="200"/>
+<img src="./read_src/function_png/recommend.png" width="400" height="200"/>
 
 ##### Before, 구현 중 발생한 문제점은 ?
 
@@ -101,8 +103,8 @@ video model -> meta -> rating 속성에서 user id 정보와 count 만을 가짐
 
 ##### 적용 사진
 
-<img src="./read_src/function_png/recommend_nonlogin.png" width="200" height="100"/>
-<img src="./read_src/function_png/recommend_login.png" width="200" height="100"/>
+<img src="./read_src/function_png/recommend_nonlogin.png" width="400" height="100"/>
+<img src="./read_src/function_png/recommend_login.png" width="400" height="100"/>
 
 ---
 
@@ -110,7 +112,7 @@ video model -> meta -> rating 속성에서 user id 정보와 count 만을 가짐
 
 배포를 시작한 직후, 이 링크를 매번 주소창에서 복사/붙여넣기 하는 점은 공유라는 버튼에 적용을 시켜보면 어떨까 라는 생각으로 시작한 기능입니다.
 
-<img src="./read_src/function_png/url_share.png" width="150" height="200"/>
+<img src="./read_src/function_png/url_share.png" width="400" height="200"/>
 
 ##### Before, 구현 중 발생한 문제점은 ?
 
@@ -128,7 +130,7 @@ video model -> meta -> rating 속성에서 user id 정보와 count 만을 가짐
 
 ##### 적용 사진
 
-<img src="./read_src/function_png/url_share_in.png" width="200" height="100"/>
+<img src="./read_src/function_png/url_share_in.png" width="400" height="100"/>
 
 ---
 
