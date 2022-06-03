@@ -3,18 +3,42 @@
   padding-top: 30px;
   margin-top: 30px;
 
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .social__btn--github {
-    background-color: transparent;
+    background-color: #444444;
+
     i {
+      color: #ffffff;
       font-size: 22px;
+      margin-right: 7px;
+    }
+    p {
+      color: #ffffff;
+      opacity: 0.85;
+    }
+    &:hover {
+      background-color: #5a5a5a;
     }
   }
 
   .social__btn--kakao {
-    background-color: transparent;
-    color: yellow;
+    background-color: #fee500;
     i {
+      color: #000000;
       font-size: 22px;
+      margin-right: 7px;
+    }
+    p {
+      color: #000000;
+      opacity: 0.85;
+    }
+
+    &:hover {
+      background-color: #fff068;
     }
   }
 }
