@@ -47,7 +47,7 @@
 완강 후, 없어서 아쉬움을 가져보던 기능들에 대해, 아쉬움 보다는 직접 만들어보면 어떨까? 하는 생각을 가져 보았고, 시작하게 되었습니다.
 
 <details> 
-<summary>내용 펼치기</summary>
+<summary>다크모드 기능 구현</summary>
 
 ### 다크 모드
 
@@ -75,6 +75,11 @@ color-theme 라는 어트리뷰트를 set하여, 미디어 쿼리를 통해 적�
 <img src="./read_src/function_png/darkmode_dark.png" width="300" height="250"/>
 
 ---
+
+</details>
+
+<details> 
+<summary>좋아요 기능 구현</summary>
 
 ### 좋아요 기능
 
@@ -111,6 +116,11 @@ video model -> meta -> rating 속성에서 user id 정보와 count 만을 가짐
 
 ---
 
+</details>
+
+<details> 
+<summary>공유 기능 구현</summary>
+
 ### 공유 기능
 
 배포를 시작한 직후, 이 링크를 매번 주소창에서 복사/붙여넣기 하는 점은 공유라는 버튼에 적용을 시켜보면 어떨까 라는 생각으로 시작한 기능입니다.
@@ -135,9 +145,9 @@ video model -> meta -> rating 속성에서 user id 정보와 count 만을 가짐
 
 <img src="./read_src/function_png/url_share_in.png" width="400" height="100"/>
 
-</details>
-
 ---
+
+</details>
 
 ### 배포
 
