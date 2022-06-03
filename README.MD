@@ -149,3 +149,11 @@ AWS s3를 통해, video와 avatar 등의 정보를 저장하도록 하고, herok
 https://onetube-w.herokuapp.com/
 
 ---
+
+### 프로젝트 기간
+
+2022.04.20 ~ 2022.06.02
+
+1개월 14일 (44일 작업)
+
+---
